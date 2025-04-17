@@ -48,7 +48,7 @@ const About = () => {
             <div className="relative">
               <div className="bg-white shadow-lg rounded-lg p-4 md:p-8 relative z-10">
                 <img 
-                  src="./mepic.jpg" 
+                  src="/lovable-uploads/mepic.jpg" 
                   alt="Manish Acharya's portrait"
                   className="w-full h-auto rounded"
                 />
