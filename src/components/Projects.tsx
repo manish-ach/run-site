@@ -15,7 +15,6 @@ type GitHubRepo = {
 
 const Projects = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const [activeCategory, setActiveCategory] = useState('all');
   const [projects, setProjects] = useState<GitHubRepo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -69,18 +68,6 @@ const Projects = () => {
       }
     };
   }, []);
-
-  // Force grid layout to rerender when changing categories
-  useEffect(() => {
-    // This will force a re-layout of the grid items when category changes
-    if (sectionRef.current) {
-      const grid = sectionRef.current.querySelector('.projects-grid');
-      if (grid) {
-        // Trigger reflow
-        void grid.offsetHeight;
-      }
-    }
-  }, [activeCategory]);
 
   const getLanguageIcon = (language: string | null) => {
     if (!language) return <Code size={48} className="text-purple" />;
@@ -147,32 +134,6 @@ const Projects = () => {
     }
   };
 
-  const getProjectCategory = (project: GitHubRepo) => {
-    if (!project.language) return 'other';
-    
-    const lang = project.language.toLowerCase();
-    if (lang === 'rust' || lang === 'c') return 'system';
-    if (lang === 'java' || lang === 'python') return 'backend';
-    if (lang === 'html' || lang === 'css' || lang === 'javascript') return 'web';
-    return 'other';
-  };
-
-  const categories = [
-    { id: 'all', name: 'All Projects' },
-    { id: 'system', name: 'System Programming' },
-    { id: 'backend', name: 'Backend' },
-    { id: 'web', name: 'Web Development' },
-    { id: 'other', name: 'Other' }
-  ];
-
-  const filteredProjects = activeCategory === 'all' 
-    ? projects 
-    : projects.filter(project => getProjectCategory(project) === activeCategory);
-
-  const handleCategoryChange = (category: string) => {
-    setActiveCategory(category);
-  };
-
   return (
     <section 
       id="projects" 
@@ -191,22 +152,6 @@ const Projects = () => {
           </p>
         </div>
         
-        <div className="flex flex-wrap justify-center gap-4 mb-12 animated-element">
-          {categories.map(category => (
-            <button
-              key={category.id}
-              onClick={() => handleCategoryChange(category.id)}
-              className={`px-5 py-2 rounded-full transition-all ${
-                activeCategory === category.id
-                  ? 'bg-purple text-white'
-                  : 'bg-white text-slate hover:bg-purple/10'
-              }`}
-            >
-              {category.name}
-            </button>
-          ))}
-        </div>
-        
         {loading ? (
           <div className="text-center py-20">
             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-purple border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
@@ -216,19 +161,18 @@ const Projects = () => {
           <div className="text-center py-20">
             <p className="text-red-500">{error}</p>
           </div>
-        ) : filteredProjects.length === 0 ? (
+        ) : projects.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-slate">No projects found in this category.</p>
+            <p className="text-slate">No projects found.</p>
           </div>
         ) : (
-          <div className="projects-grid grid md:grid-cols-2 lg:grid-cols-3 gap-8" key={activeCategory}>
-            {filteredProjects.map((project, index) => (
+          <div className="projects-grid grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {projects.map((project) => (
               <div 
-                key={`${activeCategory}-${project.id}`} 
-                className="animated-element" 
-                style={{ animationDelay: `${index * 100}ms` }}
+                key={project.id}
+                className="animated-element project-card-container" 
               >
-                <div className="project-card h-full flex flex-col">
+                <div className="project-card h-full flex flex-col bg-white rounded-lg shadow-sm overflow-hidden">
                   <div className="relative overflow-hidden bg-gray-50 flex items-center justify-center p-8">
                     {getLanguageIcon(project.language)}
                     <div className="absolute inset-0 bg-purple/80 flex items-center justify-center gap-4 opacity-0 transition-all duration-300 hover:opacity-100">
