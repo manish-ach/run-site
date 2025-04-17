@@ -29,7 +29,7 @@ const Hero = () => {
             <span className="block">Manish Acharya.</span>
             <span className="text-2xl md:text-4xl text-slate">Software Engineering Student</span>
           </h1>
-          <p className="text-lg md:text-xl text-slate-light mb-8">
+          <p className="text-lg md:text-xl text-black mb-8">
             I'm a student at Pokhara University specializing in system programming with Rust and C,
             backend development with Java and Python, and UI/UX design with Figma.
           </p>
