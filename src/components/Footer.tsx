@@ -42,7 +42,7 @@ const Footer = () => {
         <div className="border-t border-white/10 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-white/70 text-sm mb-4 md:mb-0">
-              © {currentYear} Your Name. All rights reserved.
+              © {currentYear} Manish Acharya. All rights reserved.
             </p>
             
             <div className="flex gap-6">
@@ -55,9 +55,6 @@ const Footer = () => {
             </div>
           </div>
           
-          <p className="text-white/70 text-sm text-center mt-6 flex items-center justify-center">
-            Made with <Heart size={14} className="text-purple mx-1" /> using React & Tailwind CSS
-          </p>
         </div>
       </div>
     </footer>
